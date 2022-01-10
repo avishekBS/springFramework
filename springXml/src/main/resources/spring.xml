@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+    default-init-method="globalBeansInit"
+    default-destroy-method="globalBeansDispose">
+    
+    <bean class="com.codeolate.spring.concept.postProcessor.MyBeanPostProcessor"/>
+    <bean class="com.codeolate.spring.concept.postProcessor.MyBeanFactoryPostProcessor"/>
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="spring.properties"></property>
+	</bean>
+	
+	
+    <!-- INHERITANCE CONCEPT THE child will have parent bean property -->
+   <bean id="doctor_parent" class="com.codeolate.spring.concept.impl.Doctor" abstract="true">
+   		<property name="listOfNurse">
+				<list>
+					<ref bean="nurse_B"/>
+				</list>
+		</property>
+	</bean>
+    
+    <bean id="doctor" class="com.codeolate.spring.concept.impl.Doctor" scope="singleton" parent="doctor_parent" 
+    		init-method="myInit" destroy-method="myCleanUp">
+    		
+    	<constructor-arg  ref="department"></constructor-arg>
+		<property name="doctorName" value="Santosh"/>
+		<property name="doctorId" value="839021"/>
+		
+		<!-- INNER BEAN EXAMPLE -->
+		<property name="hospital">
+			<bean class="com.codeolate.spring.concept.impl.Hospital">
+				<property name="hospitalName" value="Aster CMI"/>
+				<property name="hospitalAddress" value="Hebbal-Bangalore"/>
+			</bean>
+		</property>
+		
+		<!-- List Example -->
+			<property name="listOfNurse">
+				<list merge="true">
+					<ref bean="nurse_A"/>
+					<ref bean="nurse_B"/>
+				</list>
+			</property>
+	</bean>
+	
+	<bean id="department" class="com.codeolate.spring.concept.impl.Department">
+		<property name="departmentId" value="${department.departmentId}"/>
+		<property name="departmentName" value="${department.departmentName}"/>
+	</bean>
+	
+	<bean id="nurse_A" class="com.codeolate.spring.concept.impl.Nurse">
+		<property name="nurseName" value="Sangeeta"/>
+		<property name="nurseId" value="113"/>
+	</bean>
+	<bean id="nurse_B" class="com.codeolate.spring.concept.impl.Nurse">
+		<property name="nurseName" value="Shamali"/>
+		<property name="nurseId" value="176"/>
+	</bean>
+	<bean id="patient" class="com.codeolate.spring.concept.impl.Patient">
+		<property name="patientId" value="89756"/>
+		<property name="patientName" value="Saraswati Banik"/>
+	</bean>
+</beans>

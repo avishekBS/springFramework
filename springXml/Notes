@@ -1,0 +1,24 @@
+####
+*********This is on Spring xml configuration with Lombok***********
+	####
+
+--> Application Context create which create spring cointainer
+--> DI using getter-setter // constructor with ref object  // inner beans rather than ref // List of Beans
+--> rather than ref use autowire in bean tag
+--> ApplicationContextAware and BeanNameAware
+--> Bean Inheritance so child inherits parent bean. Use abstract true if not parent bean will be initialised. Use InitializingBean, disposibleBean
+--> Lifecycle callback = use AbstractApplicationContext to registerHook. Used for desktop application as we need to specify 
+--> another way to configure lifecycle is using  init-method and destroy-method. We can use it bean tags of particular bean else for all Beans in Beans tag
+--> BeanPostProcessor Before and After init is called at first. The main bean is called then. after this the Bean Name Aware is called.
+--> BeanFactoryPostProcessor is used to change anything in beanfactory default method.
+--> PropertyPlaceHolder is configured to get value from properties file check spring.xml
+
+
+
+###Life cycle of spring 
+
+BeanFactoryPostProcessor  -->  BeanPostProcessor  --> BeanNameAware   --> ApplicationContextAware  --> InitializingBean  -->  init-method (spring.xml)
+
+If ApplicationCOntextAware is used the it is closed using registerShutdownHook()
+
+DisposableBean  --> destroy-method
